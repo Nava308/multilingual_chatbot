@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent  {
   links:any = [
-    {path:'/main',label:'main',active:'button-active'},
-    {path:'/chat',label:'chat',active:'button-active'}
+    {path:'/main',label:'Chat with bot',active:'button-active'},
+    {path:'/chat',label:'Chat with live agent',active:'button-active'}
   ]
 }

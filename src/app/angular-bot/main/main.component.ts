@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import {Message,ChatService} from '../chat.service'
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  messages: Message[] = [];
+  value: string = "";
+  constructor(public chatService: ChatService) { }
 
   ngOnInit() {
+      this.chatService.conversation.subscribe((val) => {
+      this.messages = this.messages.concat(val);
+    });
+  }
+
+  sendMessage() {
+    this.chatService.getBotAnswer(this.value);
+    this.value = '';
   }
 
 }

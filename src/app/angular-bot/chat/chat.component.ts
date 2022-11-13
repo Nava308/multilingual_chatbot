@@ -9,6 +9,7 @@ export class ChatComponent implements OnInit {
 
   messages: Message[] = [];
   value: string = "";
+  value1: string = "";
 
   constructor(public chatService: ChatService) { }
 
@@ -19,8 +20,15 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage() {
-    this.chatService.getBotAnswer(this.value);
-    this.value = '';
+    if(this.value != null){
+      this.chatService.getBotAnswer(this.value);
+      this.value = '';
+    }
+    else if(this.value1 != null) {
+      this.chatService.getBotAnswer(this.value1);
+      this.value = '';
+    }
+    
   }
 
 }

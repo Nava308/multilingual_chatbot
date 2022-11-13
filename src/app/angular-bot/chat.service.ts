@@ -13,7 +13,7 @@ export class ChatService {
   
   messageMap:any = {
     "Hi": "Hello",
-    "Who are you": "My name is Agular Bot",
+    "Who are you": "My name is Angular Bot",
     "What is Angular": "Angular is the best framework ever",
     "default": "I can't understand. Can you please repeat"
   }

@@ -1,14 +1,35 @@
-<h1>JSExpert Angular Chat Bot</h1>
-<ng-container *ngFor="let message of messages">
-<div class="message"
-[ngClass]="{ 'from': message.author === 'bot',
-'to': message.author === 'user' }">
-{{ message.content }}
-</div>
-</ng-container>
-<label *ngIf="messages.length == 0; else dialogInfo" for="nameField">Your message</label>
-<input [(ngModel)]="value" (keyup.enter)="sendMessage()" type="text">
-<button (click)="sendMessage()">Send</button>
-<ng-template #dialogInfo>
-<span [className]="'float-right'">Total messages: {{messages.length}}</span>
-</ng-template>
+
+<div class="modal-body column">
+    <div class="first-column">
+        <h1>User window</h1>
+        <ng-container *ngFor="let message of messages">
+            <div class="message"
+            [ngClass]="{ 'from': message.author === 'bot',
+            'to': message.author === 'user' }">
+            {{ message.content }}
+            </div>
+        </ng-container>
+        <label *ngIf="messages.length == 0; else dialogInfo" for="nameField">Your message</label><br><br>
+        <input [(ngModel)]="value" (keyup.enter)="sendMessage()" type="text"><br><br>
+        <button (click)="sendMessage()">Send</button>
+        <ng-template #dialogInfo>
+            <!-- <span [className]="'float-right'">Total messages: {{messages.length}}</span> -->
+        </ng-template>
+    </div>
+    <div class="second-column">
+        <h1>Live agent window</h1>
+        <ng-container *ngFor="let message of messages">
+            <div class="message"
+            [ngClass]="{ 'from': message.author === 'user',
+            'to': message.author === 'bot' }">
+            {{ message.content }}
+            </div>
+        </ng-container>
+        <label *ngIf="messages.length == 0; else dialogInfo" for="nameField">Your message</label><br><br>
+        <input [(ngModel)]="value1" (keyup.enter)="sendMessage()" type="text"><br><br>
+        <button (click)="sendMessage()">Send</button>
+        <ng-template #dialogInfo>
+            <!-- <span [className]="'float-right'">Total messages: {{messages.length}}</span> -->
+        </ng-template>
+    </div>
+  </div>
