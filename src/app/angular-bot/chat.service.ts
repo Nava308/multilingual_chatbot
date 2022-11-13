@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
@@ -7,7 +8,7 @@ export class Message {
 
 @Injectable()
 export class ChatService {
-  constructor() {}
+  constructor(private http: HttpClient) { }
   
   conversation = new Subject<Message[]>();
   
@@ -18,6 +19,20 @@ export class ChatService {
     "default": "I can't understand. Can you please repeat"
   }
 
+  getTheTextInEng(msg:string){
+    const url = "http://localhost:8080/sf/transulate";
+    const req={
+      "q": msg,
+      "target": "en",
+      "alt": "json",
+      "source": "te"
+  }
+  this.http.post(url,req).subscribe(
+    (res)=>{
+      console.log(res);
+    }
+  );
+  }
   getBotAnswer(msg: string) {
     const userMessage = new Message('user', msg);  
     this.conversation.next([userMessage]);

@@ -21,12 +21,12 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if(this.value != null){
-      this.chatService.getBotAnswer(this.value);
+      this.chatService.getTheTextInEng(this.value);
       this.value = '';
     }
     else if(this.value1 != null) {
       this.chatService.getBotAnswer(this.value1);
-      this.value = '';
+      this.value1 = '';
     }
     
   }
