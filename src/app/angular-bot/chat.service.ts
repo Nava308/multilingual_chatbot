@@ -3,14 +3,30 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 export class Message {
-  constructor(public author: string, public content: string) {}
+  constructor(public author: string, public content: string|undefined) {}
+}
+export interface iTranslations{
+  translatedText:string;
+}
+export interface iData{
+  translations :Array<iTranslations>;
+}
+export interface iServerRes{
+    responseCode: Number,
+    errorMessage: string,
+    success: boolean
+}
+export interface iTransulateRes{
+    data: iData,
+    serverRes: iServerRes
 }
 
 @Injectable()
 export class ChatService {
   constructor(private http: HttpClient) { }
   
-  conversation = new Subject<Message[]>();
+  userConversation = new Subject<Message[]>();
+  agentConversation = new Subject<Message[]>();
   
   messageMap:any = {
     "Hi": "Hello",
@@ -19,28 +35,48 @@ export class ChatService {
     "default": "I can't understand. Can you please repeat"
   }
 
-  getTheTextInEng(msg:string){
+  getTheTextInEng(msg:string,from:string){
     const url = "http://localhost:8080/sf/transulate";
-    const req={
-      "q": msg,
-      "target": "en",
-      "alt": "json",
-      "source": "te"
-  }
-  this.http.post(url,req).subscribe(
+    let req;
+    if(from === "user"){
+      req ={
+          "q": msg,
+          "target": "en",
+          "alt": "json",
+          "source": "te"
+      }
+    } 
+    else {
+      req ={
+        "q": msg,
+        "target": "te",
+        "alt": "json",
+        "source": "en"
+    }
+    }
+
+  this.http.post<iTransulateRes>(url,req).subscribe(
     (res)=>{
-      console.log(res);
+      const userMessage = new Message('bot', res?.data?.translations?.at(0)?.translatedText); 
+      if(from === "user"){
+        this.agentConversation.next([userMessage]);
+      }
+      else{
+        this.userConversation.next([userMessage]);
+      }
     }
   );
   }
   getBotAnswer(msg: string) {
     const userMessage = new Message('user', msg);  
-    this.conversation.next([userMessage]);
-    const botMessage = new Message('bot', this.getBotMessage(msg));
-    
-    setTimeout(()=>{
-      this.conversation.next([botMessage]);
-    }, 1500);
+    this.userConversation.next([userMessage]);
+    this.getTheTextInEng(msg,"user");
+  }
+
+  getAgentAnswer(msg: string) {
+    const userMessage = new Message('user', msg);  
+    this.agentConversation.next([userMessage]);
+    this.getTheTextInEng(msg,"agent");
   }
 
   getBotMessage(question: string){

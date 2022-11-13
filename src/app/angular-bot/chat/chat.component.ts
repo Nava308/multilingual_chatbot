@@ -8,27 +8,29 @@ import {Message,ChatService} from '../chat.service'
 export class ChatComponent implements OnInit {
 
   messages: Message[] = [];
+  agentMessages: Message[] = [];
   value: string = "";
   value1: string = "";
 
   constructor(public chatService: ChatService) { }
 
   ngOnInit() {
-      this.chatService.conversation.subscribe((val) => {
+      this.chatService.userConversation.subscribe((val) => {
       this.messages = this.messages.concat(val);
+    });
+      this.chatService.agentConversation.subscribe((val) => {
+      this.agentMessages = this.agentMessages.concat(val);
     });
   }
 
   sendMessage() {
-    if(this.value != null){
-      this.chatService.getTheTextInEng(this.value);
+      this.chatService.getBotAnswer(this.value);
       this.value = '';
-    }
-    else if(this.value1 != null) {
-      this.chatService.getBotAnswer(this.value1);
-      this.value1 = '';
-    }
     
+  }
+  sendAgentMessage(){
+    this.chatService.getAgentAnswer(this.value1);
+    this.value1 = '';
   }
 
 }

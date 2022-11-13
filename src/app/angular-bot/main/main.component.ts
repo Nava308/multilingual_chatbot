@@ -12,7 +12,7 @@ export class MainComponent implements OnInit {
   constructor(public chatService: ChatService) { }
 
   ngOnInit() {
-      this.chatService.conversation.subscribe((val) => {
+      this.chatService.userConversation.subscribe((val) => {
       this.messages = this.messages.concat(val);
     });
   }
