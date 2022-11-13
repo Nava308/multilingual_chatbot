@@ -6,7 +6,10 @@
             <div class="message"
             [ngClass]="{ 'from': message.author === 'bot',
             'to': message.author === 'user' }">
-            {{ message.content }}
+            {{ message.content }} 
+            <div class="tooltip">(i)
+                <span class="tooltiptext">{{ message.oppositeText}}</span>
+              </div>
             </div>
         </ng-container>
         <label *ngIf="messages.length == 0; else dialogInfo" for="nameField">Your message</label><br><br>
@@ -23,6 +26,9 @@
             [ngClass]="{ 'from': message.author === 'bot',
             'to': message.author === 'user' }">
             {{ message.content }}
+            <div class="tooltip">(i)
+                <span class="tooltiptext">{{ message.oppositeText}}</span>
+              </div>
             </div>
         </ng-container>
         <label *ngIf="messages.length == 0; else dialogInfo" for="nameField">Your message</label><br><br>

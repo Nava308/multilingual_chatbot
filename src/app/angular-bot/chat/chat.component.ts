@@ -6,7 +6,7 @@ import {Message,ChatService} from '../chat.service'
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-
+  //currentLang:string = "";
   messages: Message[] = [];
   agentMessages: Message[] = [];
   value: string = "";

@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 export class Message {
-  constructor(public author: string, public content: string|undefined) {}
+  constructor(public author: string, public content: string|undefined,public oppositeText:string|undefined) {}
 }
 export interface iTranslations{
   translatedText:string;
+  detectedSourceLanguage:string;
 }
 export interface iData{
   translations :Array<iTranslations>;
@@ -23,17 +24,24 @@ export interface iTransulateRes{
 
 @Injectable()
 export class ChatService {
-  constructor(private http: HttpClient) { }
+  map = new Map<string,string>;
+  constructor(private http: HttpClient) { 
+    this.map.set("te","Telugu");
+    this.map.set("fr","French");
+    this.map.set("de","German");
+  }
   
   userConversation = new Subject<Message[]>();
   agentConversation = new Subject<Message[]>();
   
+  currentLang:string|undefined= "";
   messageMap:any = {
     "Hi": "Hello",
     "Who are you": "My name is Angular Bot",
     "What is Angular": "Angular is the best framework ever",
     "default": "I can't understand. Can you please repeat"
   }
+  
 
   getTheTextInEng(msg:string,from:string){
     const url = "http://localhost:8080/sf/transulate";
@@ -43,7 +51,7 @@ export class ChatService {
           "q": msg,
           "target": "en",
           "alt": "json",
-          "source": "te"
+          "source": this.currentLang
       }
     } 
     else {
@@ -57,25 +65,39 @@ export class ChatService {
 
   this.http.post<iTransulateRes>(url,req).subscribe(
     (res)=>{
-      const userMessage = new Message('bot', res?.data?.translations?.at(0)?.translatedText); 
+      
+      if(res.data.translations.at(0)?.detectedSourceLanguage!=null){
+        this.currentLang = res.data.translations.at(0)?.detectedSourceLanguage;
+         let desc:boolean= confirm("We have detected your language as "+this.map.get(this.currentLang ?? 'te')+". Do you want to continue?");
+         if(!desc){
+          
+         }
+
+      }
+      const oppsiteText = res?.data?.translations?.at(0)?.translatedText;
+         
       if(from === "user"){
+        const userMessage = new Message('bot',oppsiteText,msg );
+        const userMessage1 = new Message('user', msg,oppsiteText);
+        this.userConversation.next([userMessage1]);
         this.agentConversation.next([userMessage]);
       }
       else{
+        const userMessage = new Message('bot',oppsiteText,msg );
+        const userMessage1 = new Message('user', msg,oppsiteText);
+        this.agentConversation.next([userMessage1]);
         this.userConversation.next([userMessage]);
       }
     }
   );
   }
   getBotAnswer(msg: string) {
-    const userMessage = new Message('user', msg);  
-    this.userConversation.next([userMessage]);
+    
     this.getTheTextInEng(msg,"user");
   }
 
-  getAgentAnswer(msg: string) {
-    const userMessage = new Message('user', msg);  
-    this.agentConversation.next([userMessage]);
+  getAgentAnswer(msg: string) { 
+    
     this.getTheTextInEng(msg,"agent");
   }
 
