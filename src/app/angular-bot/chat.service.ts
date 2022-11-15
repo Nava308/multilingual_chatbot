@@ -34,7 +34,7 @@ export class ChatService {
   userConversation = new Subject<Message[]>();
   agentConversation = new Subject<Message[]>();
   
-  currentLang:string|undefined= "";
+  currentLang:string|undefined|null= "";
   messageMap:any = {
     "Hi": "Hello",
     "Who are you": "My name is Angular Bot",
@@ -67,10 +67,17 @@ export class ChatService {
     (res)=>{
       
       if(res.data.translations.at(0)?.detectedSourceLanguage!=null){
-        this.currentLang = res.data.translations.at(0)?.detectedSourceLanguage;
-         let desc:boolean= confirm("We have detected your language as "+this.map.get(this.currentLang ?? 'te')+". Do you want to continue?");
+        let curLang = res.data.translations.at(0)?.detectedSourceLanguage;
+         let desc:boolean= confirm("We have detected your language as "+this.map.get(curLang ?? 'te')+". Do you want to continue?");
          if(!desc){
-          
+          let lang = prompt("Enter any lang code from the https://cloud.google.com/translate/docs/languages Eg: te for Telugu, fr for French, de for German");
+          if(lang!=null)
+          {
+            this.currentLang = lang;
+          }
+         }
+         else{
+          this.currentLang = curLang;
          }
 
       }
