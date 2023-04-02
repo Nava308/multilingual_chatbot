@@ -15,6 +15,8 @@
         <label *ngIf="messages.length == 0; else dialogInfo" for="nameField">Your message</label><br><br>
         <input [(ngModel)]="value" (keyup.enter)="sendMessage()" type="text"><br><br>
         <button (click)="sendMessage()">Send</button>
+        <button (click)="startRecording()">Start Recording</button>
+    <button (click)="stopRecording()">Stop Recording</button>
         <ng-template #dialogInfo>
             <!-- <span [className]="'float-right'">Total messages: {{messages.length}}</span> -->
         </ng-template>

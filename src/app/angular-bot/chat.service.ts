@@ -57,18 +57,19 @@ export class ChatService {
     else {
       req ={
         "q": msg,
-        "target": "te",
+        "target": "",
         "alt": "json",
         "source": "en"
     }
     }
-
+console.log(req);
   this.http.post<iTransulateRes>(url,req).subscribe(
     (res)=>{
-      
+      if(res?.data==null)
+       return;
       if(res.data.translations.at(0)?.detectedSourceLanguage!=null){
         let curLang = res.data.translations.at(0)?.detectedSourceLanguage;
-         let desc:boolean= confirm("We have detected your language as "+this.map.get(curLang ?? 'te')+". Do you want to continue?");
+         let desc:boolean= confirm("We have detected your language as "+curLang+". Do you want to continue?");
          if(!desc){
           let lang = prompt("Enter any lang code from the https://cloud.google.com/translate/docs/languages Eg: te for Telugu, fr for French, de for German");
           if(lang!=null)
@@ -81,7 +82,8 @@ export class ChatService {
          }
 
       }
-      const oppsiteText = res?.data?.translations?.at(0)?.translatedText;
+     // if(res?.data!=null){
+        const oppsiteText = res?.data?.translations?.at(0)?.translatedText;
          
       if(from === "user"){
         const userMessage = new Message('bot',oppsiteText,msg );
@@ -95,6 +97,7 @@ export class ChatService {
         this.agentConversation.next([userMessage1]);
         this.userConversation.next([userMessage]);
       }
+      //}
     }
   );
   }
@@ -111,5 +114,42 @@ export class ChatService {
   getBotMessage(question: string){
     let answer:string = this.messageMap[question];
     return answer || this.messageMap['default'];
+  }
+  getTheSpeechInText(base64data:String){
+    const url = "http://localhost:8080/sf/speechToText";
+    let req;
+    
+      req ={
+        "config": {
+          "languageCode": this.currentLang
+      },
+      "audio": {
+          "content": base64data
+      }
+      }
+
+  this.http.post<any>(url,req).subscribe(
+    (res)=>{
+      if(res["results"]!=null
+      &&res["results"][0]!=null
+      &&res["results"][0]["alternatives"]!=null
+      &&res["results"][0]["alternatives"][0]!=null
+      &&res["results"][0]["alternatives"][0]["transcript"]!=null
+      ){
+        const data = res["results"][0]["alternatives"][0]["transcript"];
+        if(this.currentLang == "en"){
+          const userMessage = new Message('bot',data,data );
+          const userMessage1 = new Message('user', data,data);
+          this.userConversation.next([userMessage1]);
+          this.agentConversation.next([userMessage]);
+          return;
+        }
+        else{
+          this.getTheTextInEng(res["results"][0]["alternatives"][0]["transcript"],"user");
+        }
+      
+      }
+    }
+  );
   }
 }
