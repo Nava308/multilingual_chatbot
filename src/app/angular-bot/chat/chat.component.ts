@@ -15,6 +15,7 @@ export class ChatComponent implements OnInit {
   private chunks: BlobPart[] = [];
   public audioBlob: Blob | null = null;
   public audioBase64: string | null = null;
+  public isRecording:Boolean = false;
   constructor(public chatService: ChatService) { }
 
   ngOnInit() {
@@ -39,8 +40,8 @@ export class ChatComponent implements OnInit {
     if(this.chatService.currentLang==""){
       alert("Lang not selected,please enter text in lang you want to proceed");
       return;
-
     }
+    this.isRecording=true;
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       this.mediaRecorder = new MediaRecorder(stream);
 
@@ -71,6 +72,7 @@ export class ChatComponent implements OnInit {
   }
 
   getTheTextFromSpeech(base64data: string){
+    this.isRecording=false;
    this.chatService.getTheSpeechInText(base64data);
   }
 }

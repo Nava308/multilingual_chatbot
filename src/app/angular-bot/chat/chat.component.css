@@ -56,3 +56,132 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+.received-msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+}
+.received-msg-inbox {
+  width: 57%;
+}
+
+.received-msg-inbox p {
+  /* background: #efefef none repeat scroll 0 0; */
+  background-color:#ece5dd;
+  border-radius: 10px;
+  color: #000000;
+  font-size: 14px;
+  margin-left: 1rem;
+  padding: 1rem;
+  width: 100%;
+  box-shadow: rgb(0 0 0 / 25%) 0px 5px 5px 2px;
+}
+
+p {
+overflow-wrap: break-word;
+}
+
+/* Styling the msg-sent time  */
+.time {
+color: #777;
+display: block;
+font-size: 12px;
+margin: 8px 0 0;
+}
+.outgoing-chats {
+overflow: hidden;
+margin: 26px 20px;
+}
+
+.outgoing-chats-msg p {
+background-color:#dcf8c6;
+color: #000000;
+border-radius: 10px;
+font-size: 14px;
+color: #000000;
+padding: 5px 10px 5px 12px;
+width: 100%;
+padding: 1rem;
+box-shadow: rgb(0 0 0 / 25%) 0px 2px 5px 2px;
+}
+.outgoing-chats-msg {
+    float: right;
+    width: 57%;
+    padding-right: 37px;
+
+
+}
+
+/* Styling the avatar */
+.outgoing-chats-img {
+display: block;
+width: 50px;
+float: right;
+margin-right: 1rem;
+}
+
+.msg-inbox {
+/* border: 1px solid #ccc; */
+overflow: hidden;
+border-bottom-left-radius: 20px;
+border-bottom-right-radius: 20px;
+
+}
+
+/* Styling the inbox */
+.chat-page {
+padding: 0 0 10px 0;
+/* background-color: #dcf8c6; */
+opacity: 6;
+}
+
+.msg-inbox {
+/* border: 1px solid #ccc; */
+overflow: hidden;
+border-bottom-left-radius: 20px;
+border-bottom-right-radius: 20px;
+
+}
+.chats {
+padding: 30px 15px 0 25px;
+}
+
+.msg-page {
+max-height: 450px;
+overflow-y: auto;
+}
+
+
+
+
+.text-padd{
+padding-left: 25%;
+}
+
+.tooltip {
+position: relative;
+display: inline-block;
+border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+padding: 5px 0;
+border-radius: 6px;
+
+/* Position the tooltip text - see examples below! */
+position: absolute;
+z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+visibility: visible;
+}

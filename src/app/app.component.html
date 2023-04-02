@@ -1,7 +1,7 @@
 <div class="row top-bar">
   <div class="column column-25"></div>
   <div class="column column-50">
-    <button class="button button-outline"
+    <button class="btn"
             *ngFor="let link of links"
             [routerLink]="link.path"
             [routerLinkActive]="link.active"

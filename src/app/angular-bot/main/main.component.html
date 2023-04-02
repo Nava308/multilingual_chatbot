@@ -1,18 +1,46 @@
 
-<div class="modal-body column">
-    <div class="first-column">
-        <h1>User window</h1>
-        <ng-container *ngFor="let message of messages">
-            <div class="message"
-            [ngClass]="{ 'from': message.author === 'bot',
-            'to': message.author === 'user' }">
-            {{ message.content }}
+<div class="w-75 h-75 d-inline-block modal-body column">
+<div class="container">
+     <h3 class="text-padd text-primary">AI chatbot demo window</h3>
+    <div class="chat-page">
+        <div class="msg-indox">
+            <div class="chats">
+                <div class="msg-page">
+                    <div class="first-column">
+                       
+                        <ng-container *ngFor="let message of messages" >
+                            <div [ngClass]="{ 'received-chats': message.author === 'bot','outgoing-chats': message.author === 'user' }" >
+                                <div [ngClass]="{ 'received-chats-img': message.author === 'bot','outgoing-chats-img': message.author === 'user' }">
+                                </div>
+                                <div [ngClass]="{ 'received-msg': message.author === 'bot','outgoing-msg': message.author === 'user' }">
+                                    <div [ngClass]="{ 'received-msg-inbox': message.author === 'bot','outgoing-chats-msg': message.author === 'user' }">
+                                        
+                                        <p>{{ message.content }} </p>
+                                        <span class="time">{{ message.oppositeText }} </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </ng-container>
+                        
+                    </div>
+                </div>
             </div>
-        </ng-container>
-        <label *ngIf="messages.length == 0; else dialogInfo" for="nameField">Your message</label><br><br>
-        <input [(ngModel)]="value" (keyup.enter)="sendMessage()" type="text"><br><br>
-        <button (click)="sendMessage()">Send</button>
-        <ng-template #dialogInfo>
-        </ng-template>
-    </div>
+        </div>
+        <div class="max-width">
+            <div class="input-group">
+                <input [(ngModel)]="value" (keyup.enter)="sendMessage()" class="form-control" placeholder="Type message here..." type="text">&nbsp; &nbsp; 
+                <div class="input-group-append">
+                  <button class="btn btn-primary" (click)="sendMessage()" type="button">Send</button>&nbsp; &nbsp; 
+                  <button *ngIf="!isRecording" class="btn btn-success" type="button" (click)="startRecording()"><i class="bi bi-record-btn-fill">Record</i></button>
+                  <button *ngIf="isRecording" class="btn btn-danger" type="button" (click)="stopRecording()"><i class="bi bi-record-btn-fill">Stop</i></button>
+                </div>
+                <ng-template #dialogInfo>
+                    <!-- <span [className]="'float-right'">Total messages: {{messages.length}}</span> -->
+                </ng-template>
+              </div>
+            
+        </div>
+      </div>
+</div>
   </div>
